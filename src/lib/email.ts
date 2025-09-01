@@ -1,24 +1,42 @@
-import { Resend } from 'resend';
+// Email sending via Logic App / Power Automate endpoint defined in SEND_EMAIL_API.
+// Keeps the same public function signature used elsewhere in the codebase.
 
-const resend = new Resend(process.env.RESEND_API_KEY!);
+interface SendEmailResponse {
+  ok: boolean;
+  status: number;
+  bodyText?: string;
+}
 
-export async function sendMail(to: string, subject: string, html: string) {
+export async function sendMail(to: string, subject: string, html: string): Promise<SendEmailResponse> {
+  const endpoint = process.env.SEND_EMAIL_API;
+  if (!endpoint) {
+    throw new Error('SEND_EMAIL_API env var is not set');
+  }
+
   try {
-    const { data, error } = await resend.emails.send({
-      from: process.env.EMAIL_FROM!,
-      to: [to],
-      subject,
-      html,
+    const res = await fetch(endpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        to,
+        cc: '', // per requirement: send empty CC
+        subject,
+        htmlBody: html,
+      }),
     });
 
-    if (error) {
-      console.error('Error sending email:', error);
-      throw new Error(`Failed to send email: ${error.message}`);
+    if (!res.ok) {
+      const text = await res.text().catch(() => undefined);
+      console.error('Email API responded with non-OK status', res.status, text);
+      throw new Error(`Email API error: ${res.status} ${text ?? ''}`.trim());
     }
 
-    return data;
-  } catch (error) {
-    console.error('Error sending email:', error);
-    throw error;
+    const bodyText = await res.text().catch(() => undefined);
+    return { ok: true, status: res.status, bodyText };
+  } catch (err) {
+    console.error('Error sending email:', err);
+    throw err;
   }
 }

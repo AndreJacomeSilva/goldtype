@@ -18,7 +18,7 @@ Goldtype é uma plataforma de treino de dactilografia desenvolvida especialmente
 
 - Node.js 18+ 
 - NeonDB (PostgreSQL)
-- Conta Resend para envio de emails
+- Endpoint HTTP (Logic App / Power Automate) para envio de emails
 
 ### Instalação
 
@@ -41,9 +41,8 @@ Crie um ficheiro `.env.local` na raiz do projeto:
 # Base de dados NeonDB
 DATABASE_URL=postgresql://user:password@host:5432/database?sslmode=require
 
-# Envio de emails (Resend)
-RESEND_API_KEY=re_xxxxxxxxxxxxxxxxxxxxxxxx
-EMAIL_FROM=teu-email@dominio.pt
+# Envio de emails (Logic App / Power Automate)
+SEND_EMAIL_API=https://.../workflows/xxxx/triggers/manual/paths/invoke?api-version=2016-06-01
 
 # URL base da aplicação
 APP_BASE_URL=http://localhost:3000
@@ -86,7 +85,7 @@ O sistema utiliza:
 - **Framework**: Next.js 15 (App Router)
 - **Base de Dados**: NeonDB (PostgreSQL) + Drizzle ORM
 - **Autenticação**: Sistema personalizado com magic links
-- **Email**: Resend API
+- **Email**: HTTP Logic App (Power Automate) endpoint
 - **Styling**: Tailwind CSS + DaisyUI
 - **Linguagem**: TypeScript
 
@@ -114,7 +113,7 @@ src/
 
 ## 📧 Sistema de Email
 
-Os emails são enviados através da **Resend API** utilizando templates em HTML personalizados. Todos os textos estão em português de Portugal com referências a Vila Real.
+Os emails são enviados através de um **endpoint HTTP (Logic App / Power Automate)** utilizando templates em HTML personalizados. Todos os textos estão em português de Portugal com referências a Vila Real.
 
 ### Template de Login
 - Design moderno e responsivo
@@ -144,7 +143,7 @@ npm run db:studio    # Abrir Drizzle Studio
 1. **Configurar variáveis de ambiente** na plataforma de deploy
 2. **Actualizar APP_BASE_URL** para o domínio de produção
 3. **Verificar configuração NeonDB** para ambiente de produção
-4. **Configurar domínio verificado** no Resend
+4. **Configurar endpoint de email** (Logic App / Power Automate) em produção
 
 ### Platforms Sugeridas
 - **Vercel** (recomendado para Next.js)

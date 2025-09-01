@@ -6,8 +6,8 @@ import { sendMail } from "@/lib/email";
 import { generateLoginEmailHtml, generateLoginEmailSubject } from "@/templates/login-email";
 import { eq, and, gt, desc } from "drizzle-orm";
 
-const CODE_TTL_MIN = 10;         // expira em 10 minutos
-const RESEND_COOLDOWN_SEC = 60;  // 1 pedido por minuto por utilizador
+const CODE_TTL_MIN = 10;           // expira em 10 minutos
+const REQUEST_COOLDOWN_SEC = 60;   // 1 pedido por minuto por utilizador
 
 export async function POST(req: Request) {
   try {
@@ -37,7 +37,7 @@ export async function POST(req: Request) {
       .where(
         and(
           eq(loginCodes.userId, userId),
-          gt(loginCodes.createdAt, new Date(Date.now() - RESEND_COOLDOWN_SEC * 1000))
+          gt(loginCodes.createdAt, new Date(Date.now() - REQUEST_COOLDOWN_SEC * 1000))
         )
       )
       .orderBy(desc(loginCodes.id))
