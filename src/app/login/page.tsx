@@ -16,6 +16,11 @@ function LoginForm() {
   async function requestCode(e: React.FormEvent) {
     e.preventDefault();
     if (!email.trim()) return;
+    const normalizedEmail = email.trim().toLowerCase();
+    if (!normalizedEmail.endsWith("@goldenergy.pt")) {
+      setMessage("Se não tens a energia Goldenergy, não podes ter a 'Tecla Certa'! ⚡ Esta aplicação é um segredo de família... 🤫 e é exclusiva para as nossas equipas com email Goldenergy.");
+      return;
+    }
     
     setLoading(true);
     setMessage("");
@@ -23,7 +28,7 @@ function LoginForm() {
     try {
       const res = await fetch("/api/auth/request", {
         method: "POST",
-        body: JSON.stringify({ email: email.trim() }),
+        body: JSON.stringify({ email: normalizedEmail }),
         headers: { "Content-Type": "application/json" }
       });
       
@@ -49,6 +54,11 @@ function LoginForm() {
   async function verify(e: React.FormEvent) {
     e.preventDefault();
     if (!code.trim()) return;
+    const normalizedEmail = email.trim().toLowerCase();
+    if (!normalizedEmail.endsWith("@goldenergy.pt")) {
+      setMessage("Se não tens a energia Goldenergy, não podes ter a 'Tecla Certa'! ⚡ Esta aplicação é um segredo de família... 🤫 e é exclusiva para as nossas equipas com email Goldenergy.");
+      return;
+    }
     
     setLoading(true);
     setMessage("");
@@ -57,7 +67,7 @@ function LoginForm() {
       const res = await fetch("/api/auth/verify", {
         method: "POST",
         body: JSON.stringify({ 
-          email: email.trim(), 
+          email: normalizedEmail, 
           code: code.trim(), 
           displayName: displayName.trim() 
         }),
