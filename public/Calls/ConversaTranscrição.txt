@@ -1,0 +1,46 @@
+Uma chamada, em Português de Portugal, de um cliente e a linha de apoio da Goldenergy, uma comercializadora de eletricidade portuguesa.
+Agente: Bom dia, daqui fala Anabela Belíssima, da Goldenergy. Com quem tenho o prazer de estar a falar?
+Cliente: Bom dia, minha senhora. Eu sou o Baltazar Sete Luas e quero alterar a minha potência contratada, porque a luz está sempre a ir abaixo.
+Agente: Senhor Baltazar, percebo perfeitamente. Para que eu possa ajudá-lo, vou precisar de confirmar alguns dados. Seria possível facultar-me o seu número de cliente?
+Cliente: Ah, o número de cliente... Espere lá, que o papelinho deve andar por aqui... Ah, está aqui! É o 1234, 5678, 90. Acho que é este.
+Agente: O número que me deu é 1234, 5678, 90? Peço-lhe que confirme. É que aqui não me aparece nada.
+Cliente: Olhe, talvez me tenha enganado. Espere que vou ver outra fatura... Ah, aqui está, é o 9876, 5432, 10.
+Agente: Certo, agora sim, já o encontrei, senhor Baltazar. Pode, por favor, dizer-me o seu número de contribuinte?
+Cliente: Ora, o meu número de contribuinte... É aquele que começa com 2... Espera, não, é 1... Ai, que confusão. Não sei.
+Agente: Senhor Baltazar, para avançarmos, necessito mesmo do seu número de contribuinte. Por favor, veja no seu cartão de cidadão.
+Cliente: Ah, está bem. Tenho aqui o cartão. É o 2555, 3333...
+Agente: Senhor Baltazar, um número de contribuinte tem nove dígitos.
+Cliente: Ah, tem, pois tem... Esqueci-me de dizer o resto. É 2555, 3333, 40.
+Agente: Ótimo, agora só preciso que me confirme a sua morada.
+Cliente: A minha morada é... Aldeia da Aboboreira, Rua do Poço, número 15, na Freguesia da Pedra.
+Agente: Rua do Poço, Aldeia da Aboboreira, Freguesia da Pedra. Confere?
+Cliente: Sim, é mesmo essa.
+Agente: Muito bem, senhor Baltazar. Já validei os seus dados. Verifiquei que a sua potência contratada é de 3,45 kVA. É normal que, com o uso de vários eletrodomésticos, a luz vá abaixo.
+Cliente: A luz vai sempre abaixo! Quando ligo a batedeira, já sei que a luz vai apagar-se. E se ligo o forno para a minha mulher fazer a broa, então, aí é um desastre!
+Agente: Percebo. E que potência contratada gostaria de ter?
+Cliente: Não sei, minha senhora. O que é que me aconselha? Que potência preciso para a batedeira e o forno?
+Agente: Para que possa ligar esses eletrodomésticos, sugiro que altere a sua potência contratada para 6,90 kVA.
+Cliente: 6,90? Não é muito? Depois a conta da luz vai vir muito mais alta, não é? Não quero pagar mais.
+Agente: A sua fatura irá ter um ligeiro aumento na potência, mas garanto-lhe que a diferença não é substancial. E vai acabar de vez com os problemas de a luz ir abaixo.
+Cliente: Pois, se me garante, então vamos lá.
+Agente: Muito bem, senhor Baltazar. Já fiz a alteração. A potência contratada vai passar para 6,90 kVA, e entrará em vigor daqui a 24 a 48 horas.
+Cliente: E agora não vai ser preciso vir cá um técnico, não? É que, da outra vez, o técnico demorou tanto que a broa da minha mulher até já tinha azedado.
+Agente: Não, não é preciso. A alteração é feita de forma remota.
+
+Cliente: Ah, que maravilha! Então, fico a aguardar. Agradeço imenso, minha senhora.
+
+Agente: De nada, senhor Baltazar. Fico contente por poder ajudá-lo. Tenha um resto de um bom dia.
+
+Cliente: Igualmente, Anabela. Fique bem. E se puder, não ligue a batedeira e o forno ao mesmo tempo, por enquanto!
+
+Agente: Ah, não se preocupe! Tenho um forno a gás. E a batedeira, até agora, ainda não me deu problemas.
+
+Cliente: Ah, muito bem! Então é isso. Fique bem, minha senhora!
+
+Agente: Igualmente, senhor Baltazar. Fico a aguardar que a sua broa de milho não azede.
+
+Cliente: Agradeço a sua preocupação. Fique bem.
+
+Agente: Fico, e o senhor também. Bom dia.
+
+Cliente: Adeus!

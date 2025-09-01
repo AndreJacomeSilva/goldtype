@@ -1,103 +1,112 @@
-import Image from "next/image";
+import Link from "next/link";
+import { getCurrentUser } from "@/lib/session";
 
-export default function Home() {
+export default async function Home() {
+  const user = await getCurrentUser();
+
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <div className="w-full">
+      {/* Hero */}
+      <section className="gradient-hero relative overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 py-24 md:py-32 flex flex-col items-start gap-8">
+          <div className="space-y-6 max-w-3xl">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.05] bg-clip-text text-transparent bg-gradient-to-br from-primary via-neutral to-accent">
+              A Energia na Ponta dos Teus Dedos.
+            </h1>
+            <h2 className="text-lg md:text-xl lg:text-2xl font-medium text-neutral/80">
+              Transforma cada clique numa vitória. Bem-vindo ao <span className="font-semibold text-primary">Tecla Certa</span>, a plataforma que vai turbinar a tua performance no apoio ao cliente.
+            </h2>
+          </div>
+          {!user ? (
+            <Link href="/login" className="btn btn-primary btn-lg shadow-lg shadow-primary/25 hover:shadow-primary/40 transition-all">
+              Entrar e Começar o Treino!
+            </Link>
+          ) : (
+            <div className="flex flex-col gap-4">
+              <p className="text-lg">
+                Olá, <span className="font-semibold text-primary">{user.displayName || user.email}</span>! 👋
+              </p>
+              <Link href="/dashboard" className="btn btn-secondary btn-lg">
+                Ir para o Dashboard
+              </Link>
+            </div>
+          )}
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </section>
+
+      {/* Funcionalidades */}
+      <section id="funcionalidades" className="max-w-7xl mx-auto px-4 py-20 md:py-28">
+        <div className="grid md:grid-cols-2 gap-12 items-start">
+          <div className="prose-custom space-y-6">
+            <h2 className="text-3xl md:text-4xl font-bold">Mais Rápido que o Corgo a chegar ao Douro!</h2>
+            <p className="text-base md:text-lg text-neutral/80">Na Goldenergy, a eficiência é a nossa energia. O <strong>Tecla Certa</strong> foi criado para te ajudar a comunicar de forma mais rápida e precisa, melhorando a experiência dos nossos clientes e o teu dia a dia. Prepara-te para desbloquear o teu potencial máximo.</p>
+            <ul className="space-y-4">
+              <li className="flex gap-4 items-start p-4 rounded-box bg-base-100 shadow-sm border border-base-300/60">
+                <span className="text-2xl">⚡️</span>
+                <div>
+                  <p className="font-semibold">Treino Contínuo</p>
+                  <p className="text-neutral/70 text-sm md:text-base">Acede a dezenas de exercícios de transcrição e cópia para aperfeiçoares a tua técnica.</p>
+                </div>
+              </li>
+              <li className="flex gap-4 items-start p-4 rounded-box bg-base-100 shadow-sm border border-base-300/60">
+                <span className="text-2xl">🎮</span>
+                <div>
+                  <p className="font-semibold">Jogos Desafiantes</p>
+                  <p className="text-neutral/70 text-sm md:text-base">Aprender não tem de ser aborrecido. Aumenta a tua velocidade e precisão com jogos divertidos.</p>
+                </div>
+              </li>
+              <li className="flex gap-4 items-start p-4 rounded-box bg-base-100 shadow-sm border border-base-300/60">
+                <span className="text-2xl">🏆</span>
+                <div>
+                  <p className="font-semibold">Competição Saudável</p>
+                  <p className="text-neutral/70 text-sm md:text-base">Participa nas competições internas, mede a tua performance e sobe no ranking da empresa.</p>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <div className="relative">
+            <div className="absolute -inset-4 -z-10 bg-gradient-to-br from-secondary/30 via-primary/10 to-accent/20 blur-2xl rounded-full opacity-70" />
+            <div className="mockup-window border border-base-300 bg-base-100 shadow-xl">
+              <div className="p-8 space-y-4 text-sm md:text-base">
+                <p className="font-semibold text-primary">Painel de Progresso (Exemplo)</p>
+                <div className="space-y-3">
+                  <div>
+                    <div className="flex justify-between text-xs mb-1"><span>Velocidade</span><span>78 PPM</span></div>
+                    <progress className="progress progress-primary w-full" value={78} max={120}></progress>
+                  </div>
+                  <div>
+                    <div className="flex justify-between text-xs mb-1"><span>Precisão</span><span>93%</span></div>
+                    <progress className="progress progress-secondary w-full" value={93} max={100}></progress>
+                  </div>
+                  <div>
+                    <div className="flex justify-between text-xs mb-1"><span>Nível</span><span>3/10</span></div>
+                    <progress className="progress progress-accent w-full" value={30} max={100}></progress>
+                  </div>
+                </div>
+                <div className="divider my-4">Próximo Objetivo</div>
+                <p className="text-neutral/70 leading-relaxed">Completa mais 2 sessões de treino hoje para desbloqueares o modo Competição semanal.</p>
+                <button className="btn btn-primary w-full">Ir Treinar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Curiosidade */}
+      <section id="sobre" className="relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-secondary/10 to-transparent" />
+        <div className="max-w-5xl mx-auto px-4 py-24 relative">
+          <div className="space-y-6">
+            <h2 className="text-3xl md:text-4xl font-bold">Curiosidade a 200 WPM!</h2>
+            <div className="space-y-4 text-neutral/80 text-base md:text-lg">
+              <p>Já pensaste na velocidade das tuas mãos?</p>
+              <p>Um bom dactilógrafo atinge facilmente as 80 palavras por minuto (PPM). Os profissionais chegam às 120 PPM. O recorde mundial está acima das 200 PPM!</p>
+              <p>Em Vila Real, estamos habituados à velocidade do nosso famoso Circuito Internacional. Acreditas que a distância que os dedos de um dactilógrafo profissional percorrem no teclado durante uma hora de escrita intensiva <strong>equivale a dar quase duas voltas completas ao Circuito de Vila Real</strong>?</p>
+              <p>É a prova de que em Trás-os-Montes, a energia e a velocidade estão no nosso ADN, seja na pista ou no teclado!</p>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }

@@ -1,36 +1,166 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🏆 Goldtype - Tecla Certa
 
-## Getting Started
+**A Energia na Ponta dos Teus Dedos**
 
-First, run the development server:
+Goldtype é uma plataforma de treino de dactilografia desenvolvida especialmente para os colaboradores da Goldenergy em Vila Real, Portugal. Transforma cada clique numa vitória e turbina a performance no apoio ao cliente.
 
+## ⚡ Funcionalidades
+
+- **Treino Contínuo**: Exercícios de transcrição e cópia para aperfeiçoar a técnica
+- **Jogos Desafiantes**: Aprendizagem divertida com foco em velocidade e precisão
+- **Competição Saudável**: Rankings internos e competições entre colaboradores
+- **Autenticação Segura**: Sistema de login por email com links mágicos
+- **Dashboard Personalizado**: Acompanhamento de progresso e estatísticas
+
+## 🚀 Como Começar
+
+### Pré-requisitos
+
+- Node.js 18+ 
+- NeonDB (PostgreSQL)
+- Conta Resend para envio de emails
+
+### Instalação
+
+1. **Clone o repositório**
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/AndreJacomeSilva/goldtype.git
+cd goldtype
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. **Instale as dependências**
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. **Configure as variáveis de ambiente**
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Crie um ficheiro `.env.local` na raiz do projeto:
 
-## Learn More
+```bash
+# Base de dados NeonDB
+DATABASE_URL=postgresql://user:password@host:5432/database?sslmode=require
 
-To learn more about Next.js, take a look at the following resources:
+# Envio de emails (Resend)
+RESEND_API_KEY=re_xxxxxxxxxxxxxxxxxxxxxxxx
+EMAIL_FROM=teu-email@dominio.pt
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# URL base da aplicação
+APP_BASE_URL=http://localhost:3000
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+4. **Configure a base de dados**
+```bash
+# Gerar e aplicar migrações
+npm run db:push
 
-## Deploy on Vercel
+# (Opcional) Abrir Drizzle Studio para explorar a BD
+npm run db:studio
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+5. **Inicie o servidor de desenvolvimento**
+```bash
+npm run dev
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Abra [http://localhost:3000](http://localhost:3000) no teu navegador.
+
+## 🗄️ Estrutura da Base de Dados
+
+### Tabelas Principais
+
+- **`users`**: Informações dos utilizadores (email, nome, timestamps)
+- **`login_codes`**: Códigos temporários para autenticação por email
+- **`sessions`**: Sessões ativas dos utilizadores (tokens, expiração, IP)
+
+### Autenticação
+
+O sistema utiliza:
+- **Links mágicos** enviados por email
+- **Códigos de 6 dígitos** como alternativa
+- **Sessões opacas** com tokens seguros
+- **Rate limiting** para prevenir spam
+
+## 🛠️ Tecnologias
+
+- **Framework**: Next.js 15 (App Router)
+- **Base de Dados**: NeonDB (PostgreSQL) + Drizzle ORM
+- **Autenticação**: Sistema personalizado com magic links
+- **Email**: Resend API
+- **Styling**: Tailwind CSS + DaisyUI
+- **Linguagem**: TypeScript
+
+## 📁 Estrutura do Projeto
+
+```
+src/
+├── app/                    # App Router (páginas e APIs)
+│   ├── api/auth/          # Endpoints de autenticação
+│   ├── login/             # Página de login
+│   └── page.tsx           # Página principal
+├── components/            # Componentes React reutilizáveis
+├── db/                    # Configuração e schema da BD
+├── lib/                   # Utilitários (crypto, email, sessões)
+└── templates/             # Templates de email em HTML
+```
+
+## 🔐 Segurança
+
+- Códigos e tokens sempre guardados como **hash SHA-256**
+- Sessões opacas com **expiração de 30 dias**
+- Códigos de login com **expiração de 10 minutos** e **uso único**
+- **Rate limiting**: máximo 1 pedido por minuto, 5 tentativas por código
+- Cookies **HttpOnly + Secure + SameSite=Lax**
+
+## 📧 Sistema de Email
+
+Os emails são enviados através da **Resend API** utilizando templates em HTML personalizados. Todos os textos estão em português de Portugal com referências a Vila Real.
+
+### Template de Login
+- Design moderno e responsivo
+- Branding Goldtype com cores corporativas
+- Código de 6 dígitos destacado
+- Link mágico para acesso directo
+- Informações de segurança e expiração
+
+## 🎮 Scripts Disponíveis
+
+```bash
+npm run dev          # Servidor de desenvolvimento
+npm run build        # Build de produção
+npm run start        # Servidor de produção
+npm run lint         # Linter ESLint
+
+# Base de dados
+npm run db:generate  # Gerar migrações
+npm run db:push      # Aplicar schema à BD
+npm run db:studio    # Abrir Drizzle Studio
+```
+
+## 🚀 Deploy
+
+### Preparação para Produção
+
+1. **Configurar variáveis de ambiente** na plataforma de deploy
+2. **Actualizar APP_BASE_URL** para o domínio de produção
+3. **Verificar configuração NeonDB** para ambiente de produção
+4. **Configurar domínio verificado** no Resend
+
+### Platforms Sugeridas
+- **Vercel** (recomendado para Next.js)
+- **Netlify**
+- **Railway**
+
+## 🏃‍♂️ Vila Real, Portugal
+
+> "Mais rápido que o Corgo a chegar ao Douro!"
+
+Desenvolvido com ❤️ em Vila Real para a equipa Goldenergy. A velocidade dos nossos dedos no teclado rivaliza com a velocidade dos carros no nosso famoso Circuito Internacional!
+
+## 📜 Licença
+
+Este projeto é propriedade da Goldenergy e destina-se exclusivamente ao uso interno da empresa.
+
+---
+
+**Goldtype** - Onde cada tecla conta e cada clique é uma vitória! 🏆
