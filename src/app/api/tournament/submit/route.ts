@@ -50,8 +50,8 @@ export async function POST(req: NextRequest) {
     }).returning({ id: competitionResults.id, createdAt: competitionResults.createdAt, score: competitionResults.score });
 
     return NextResponse.json({ ok: true, result: inserted[0] });
-  } catch (e: any) {
-    console.error(e);
+  } catch (e) {
+    console.error(e instanceof Error ? e.message : e);
     return NextResponse.json({ error: 'Erro interno' }, { status: 500 });
   }
 }

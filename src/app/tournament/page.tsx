@@ -45,7 +45,8 @@ export default function TournamentPage() {
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
 
   // Estado da semana
-  const [lastResult, setLastResult] = useState<any | null>(null);
+  interface LastResult { createdAt: string; score: number; }
+  const [lastResult, setLastResult] = useState<LastResult | null>(null);
   const [alreadyThisWeek, setAlreadyThisWeek] = useState(false);
 
   const intervalRef = useRef<number | null>(null);
@@ -61,8 +62,8 @@ export default function TournamentPage() {
         if (data.length === 0) throw new Error('Sem áudios disponíveis');
         const choice = data[Math.floor(Math.random() * data.length)];
         if (!cancelled) setAudio(choice);
-      } catch (e: any) {
-        if (!cancelled) setError(e.message || 'Erro a carregar áudio');
+      } catch (e) {
+        if (!cancelled) setError(e instanceof Error ? e.message : 'Erro a carregar áudio');
       }
     })();
     return () => { cancelled = true; };
@@ -118,8 +119,8 @@ export default function TournamentPage() {
       setFrozenWpm(null);
       setEvaluation(null);
       startTimer();
-    } catch (e: any) {
-      setError('Não consegui começar o áudio. Tenta outra vez.');
+      } catch {
+        setError('Não consegui começar o áudio. Tenta outra vez.');
     }
   }, [audio, alreadyThisWeek, startTimer]);
 
@@ -160,7 +161,7 @@ export default function TournamentPage() {
           setSuccessMsg('Resultado registado ✅');
           setAlreadyThisWeek(true);
         }
-      } catch (e: any) {
+      } catch {
         setError('Falhou a submissão. O diabo anda solto.');
       } finally {
         setSubmitting(false);
@@ -186,7 +187,7 @@ export default function TournamentPage() {
       <h1 className="text-4xl font-bold text-center">Prova Semanal ⚔️</h1>
       <div className="alert shadow bg-base-200">
         <div>
-          <span className="font-semibold">Regra d'ouro:</span> só podes fazer <strong>uma</strong> prova por semana. Agarra-te a ela como quem agarra um pastel de Chaves quentinho.
+          <span className="font-semibold">Regra d&apos;ouro:</span> só podes fazer <strong>uma</strong> prova por semana. Agarra-te a ela como quem agarra um pastel de Chaves quentinho.
           {lastResult && (
             <span className="block text-sm mt-1">Última prova: {formatDateTime(lastResult.createdAt)} (score {lastResult.score})</span>
           )}
