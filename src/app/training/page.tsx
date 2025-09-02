@@ -39,6 +39,10 @@ export default function TrainPage() {
   const [hasEnded, setHasEnded] = useState(false);
   const [frozenWpm, setFrozenWpm] = useState<number | null>(null);
   const [evaluation, setEvaluation] = useState<EvaluationResult | null>(null);
+  const score = useMemo(() => {
+    if (!evaluation) return null;
+    return Math.round(evaluation.precisionPercent * Math.log(1 + evaluation.wpm));
+  }, [evaluation]);
 
   // Interval ref
   const intervalRef = useRef<number | null>(null);
@@ -314,6 +318,13 @@ export default function TrainPage() {
                   <div className="stat-title">WPM</div>
                   <div className="stat-value">{evaluation.wpm}</div>
                 </div>
+                {score !== null && (
+                  <div className="stat">
+                    <div className="stat-title">Score</div>
+                    <div className="stat-value">{score}</div>
+                    <div className="stat-desc text-xs">precisão × ln(1+WPM)</div>
+                  </div>
+                )}
               </div>
             </div>
             <div className="grid md:grid-cols-2 gap-4">

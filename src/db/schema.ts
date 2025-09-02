@@ -41,10 +41,29 @@ export const sessions = pgTable('sessions', {
   };
 });
 
+// Competition results (uma prova por semana por utilizador)
+// Estrutura simples conforme pedido: regista data/hora, utilizador, áudio, métricas principais e score agregado.
+export const competitionResults = pgTable('competition_results', {
+  id: bigserial('id', { mode: 'number' }).primaryKey(),
+  userId: uuid('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
+  audioId: text('audio_id').notNull(),
+  // Métricas base (inteiros para simplicidade)
+  wpm: integer('wpm').notNull(),
+  precisionPercent: integer('precision_percent').notNull(), // arredondado
+  score: integer('score').notNull(), // fórmula: precisionPercent * ln(1 + wpm)
+  createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+}, (table) => {
+  return {
+    userIdIdx: index('competition_results_user_id_idx').on(table.userId),
+    audioIdx: index('competition_results_audio_id_idx').on(table.audioId),
+  };
+});
+
 // Relations
 export const usersRelations = relations(users, ({ many }) => ({
   loginCodes: many(loginCodes),
   sessions: many(sessions),
+  competitionResults: many(competitionResults),
 }));
 
 export const loginCodesRelations = relations(loginCodes, ({ one }) => ({
@@ -57,6 +76,13 @@ export const loginCodesRelations = relations(loginCodes, ({ one }) => ({
 export const sessionsRelations = relations(sessions, ({ one }) => ({
   user: one(users, {
     fields: [sessions.userId],
+    references: [users.id],
+  }),
+}));
+
+export const competitionResultsRelations = relations(competitionResults, ({ one }) => ({
+  user: one(users, {
+    fields: [competitionResults.userId],
     references: [users.id],
   }),
 }));

@@ -8,6 +8,13 @@
       "when": 1755881960529,
       "tag": "0000_far_sunset_bain",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1756490000000,
+      "tag": "0001_competition_results",
+      "breakpoints": true
     }
   ]
 }
