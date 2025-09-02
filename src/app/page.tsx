@@ -22,14 +22,9 @@ export default async function Home() {
               Entrar e Começar o Treino!
             </Link>
           ) : (
-            <div className="flex flex-col gap-4">
-              <p className="text-lg">
-                Olá, <span className="font-semibold text-primary">{user.displayName || user.email}</span>! 👋
-              </p>
-              <Link href="/dashboard" className="btn btn-secondary btn-lg">
-                Ir para o Dashboard
-              </Link>
-            </div>
+            <p className="text-lg">
+              Olá, <span className="font-semibold text-primary">{user.displayName || user.email}</span>! 👋
+            </p>
           )}
         </div>
       </section>
@@ -85,7 +80,7 @@ export default async function Home() {
                 </div>
                 <div className="divider my-4">Próximo Objetivo</div>
                 <p className="text-neutral/70 leading-relaxed">Completa mais 2 sessões de treino hoje para desbloqueares o modo Competição semanal.</p>
-                <button className="btn btn-primary w-full">Ir Treinar</button>
+                {/* Botão de treinar removido conforme pedido */}
               </div>
             </div>
           </div>

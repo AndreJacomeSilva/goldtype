@@ -1,0 +1,20 @@
+[
+  {
+    "id": "tarifas_e_ciclos",
+    "title": "Tarifas e Ciclos",
+    "description": "Informação sobre as tarifas e Ciclos da Goldenergy.",
+    "fileUrl": "Tarifas_e_Ciclos.mp3",
+    "durationSeconds": 145,
+    "transcript": "O consumo energético dos clientes varia segundo três períodos: \nHoras de vazio: o período do dia com menor consumo de eletricidade, como à noite e aos fins de semana.\nHoras de ponta: o período do dia com maior consumo de eletricidade, como ao início da manhã e ao final da tarde.\nHoras de cheia: o período do dia com um consumo mediano de eletricidade.\n\nA tarifa simples é considerada como uma tarifa fixa, paga o mesmo valor o dia inteiro.\n\nA tarifa bi-horária já considera o horário do consumo, vazio ou fora de vazio (ponta e cheia). Nesta tarifa existem também dois tipos de ciclo:\nO ciclo diário é adequado para quem tem um consumo de energia uniforme toda a semana.\nPeríodo de vazio no bi-horário diário – verão e inverno\n- Todos os dias – das 22h00 às 8h00\nO ciclo semanal é adequado para quem tem um consumo mais acentuado durante o fim-de-semana.\nPeríodo de vazio bi-horário semanal – verão\n- Segunda a sexta – das 0h00 às 07h00\n- Sábado – das 0h00 às 9h00; das 14h00 às 20h00; das 22h00 às 0h00\n- Domingo – todo o dia\nPeríodo de vazio bi-horário semanal – inverno\n- Segunda a sexta – das 0h00 às 07h00\n- Sábado – das 0h00 às 9h30, das 13h00 às 18h30, das 22h00 às 0h00\n- Domingo – todo o dia\n\nPor fim, a tarifa tri-horária considera o horário do consumo, vazio, ponta e cheia.\nPeríodo de vazio no tri-horário diário - verão e inverno\n- Todos os dias – das 22h00 às 8h00\nPeríodo de vazio no tri-horário semanal - verão\n- Segunda a sexta – das 0h00 às 07h00\n- Sábado – das 0h00 às 9h00; das 14h00 às 20h00; das 22h00 às 0h00\n- Domingo – todo o dia\nPeríodo de vazio no tri-horário semanal - inverno\n- Segunda a sexta – das 0h00 às 07h00\n- Sábado – das 0h00 às 9h30; das 13h00 às 18h30; das 22h00 às 0h00\n- Domingo – todo o dia\n\nNOTA: O período de verão é de 20 de Junho a 20 de Dezembro e o período de inverno é de 21 de Dezembro a 19 de Junho. A alteração de tarifa fideliza o cliente à nova tarifa durante 12 meses.",
+    "language": "pt-PT"
+  },
+  {
+    "id": "casa_fechada",
+    "title": "Casa Fechada",
+    "description": "Explicação sobre o que é uma Casa Fechada.",
+    "fileUrl": "casa_fechada.mp3",
+    "durationSeconds": 53,
+    "transcript": "Esta ativação pode ser feita no Portal do Agente ou na Área de Cliente pelo próprio cliente. No Portal de Agentes, deves selecionar o separador \"Pedidos - Casa Fechada\".\nSão necessárias as leituras atualizadas e devemos informar o cliente que deve desligar o interruptor principal no quadro elétrico e fechar a válvula no contador de gás. Será apenas faturado o valor das taxas e impostos sem consumo.\nNOTA: Informamos o cliente que o sistema de \"casa fechada\" é desativado automaticamente quando existem consumos. Informar o cliente que de futuro pode fazer esta alteração na Área de Cliente.​",
+    "language": "pt-PT"
+  }
+]

@@ -16,6 +16,7 @@ export function Header() {
 
   // Single source of truth for primary navigation (desktop + mobile)
   const primaryNav = [
+    { href: "/", label: "Homepage" },
     { href: "/learn", label: "Aprender" },
     { href: "/training", label: "Treinar" },
     { href: "/games", label: "Jogar" },
@@ -49,9 +50,9 @@ export function Header() {
   return (
     <header className="navbar bg-base-100/70 backdrop-blur supports-[backdrop-filter]:bg-base-100/60 border-b border-base-300 sticky top-0 z-50">
       <div className="navbar-start gap-2">
-        <div className="w-10 h-10 rounded-box bg-primary/10 grid place-content-center font-bold text-primary">
+        <Link href="/" aria-label="Ir para a página inicial" className="w-10 h-10 rounded-box bg-primary/10 grid place-content-center font-bold text-primary hover:bg-primary/15 transition-colors">
           🏆
-        </div>
+        </Link>
         <button className="btn btn-ghost lg:hidden" onClick={() => setOpen(o=>!o)} aria-label="Toggle menu">
           <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" /></svg>
         </button>
