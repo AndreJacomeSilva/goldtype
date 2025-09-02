@@ -14,6 +14,15 @@ export function Header() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
+  // Single source of truth for primary navigation (desktop + mobile)
+  const primaryNav = [
+    { href: "/learn", label: "Aprender" },
+    { href: "/training", label: "Treinar" },
+    { href: "/games", label: "Jogar" },
+    { href: "/tournament", label: "Competir" },
+    { href: "/leaderboard", label: "Vencedores" },
+  ];
+
   useEffect(() => {
     fetch('/api/auth/me')
       .then(res => res.json())
@@ -48,13 +57,7 @@ export function Header() {
         </button>
         <nav className="hidden lg:flex">
           <ul className="menu menu-horizontal px-1 gap-1 font-medium">
-            {[
-              { href: "/learn", label: "Aprender" },
-              { href: "/training", label: "Treinar" },
-              { href: "/games", label: "Jogar" },
-              { href: "/tournament", label: "Competir" },
-              { href: "/leaderboard", label: "Vencedores" },
-            ].map(i => (
+            {primaryNav.map(i => (
               <li key={i.href}><Link href={i.href} className="rounded-btn hover:bg-base-200/80 focus-visible:outline-none focus-visible:ring focus-visible:ring-primary/40 transition-colors">{i.label}</Link></li>
             ))}
           </ul>
@@ -94,30 +97,17 @@ export function Header() {
       {open && (
         <div className="lg:hidden absolute top-full inset-x-0 bg-base-100/95 backdrop-blur border-b border-base-300 animate-fade-in">
           <ul className="menu p-4 gap-1">
+            {primaryNav.map(i => (
+              <li key={i.href}><Link href={i.href} onClick={() => setOpen(false)}>{i.label}</Link></li>
+            ))}
             {!user ? (
-              [
-                { href: "/", label: "Início" },
-                { href: "#funcionalidades", label: "Funcionalidades" },
-                { href: "#sobre", label: "Sobre" },
-              ].map(i => (
-                <li key={i.href}><Link href={i.href} onClick={()=>setOpen(false)}>{i.label}</Link></li>
-              )).concat([
-                <li key="login">
-                  <Link href="/login" className="btn btn-primary w-full" onClick={()=>setOpen(false)}>
-                    Aceder
-                  </Link>
-                </li>
-              ])
+              <li key="login" className="mt-2">
+                <Link href="/login" className="btn btn-primary w-full" onClick={() => setOpen(false)}>
+                  Aceder
+                </Link>
+              </li>
             ) : (
               [
-                { href: "/", label: "Início" },
-                { href: "/games", label: "Jogos" },
-                { href: "/training", label: "Treino" },
-                { href: "/tournament", label: "Competição" },
-                { href: "/leaderboard", label: "Leaderboard" },
-              ].map(i => (
-                <li key={i.href}><Link href={i.href} onClick={()=>setOpen(false)}>{i.label}</Link></li>
-              )).concat([
                 <li key="user-info" className="mt-4 border-t pt-4">
                   <div className="flex items-center gap-3 p-2">
                     <div className="avatar placeholder">
@@ -134,15 +124,15 @@ export function Header() {
                   </div>
                 </li>,
                 <li key="logout">
-                  <button 
-                    onClick={() => { handleLogout(); setOpen(false); }} 
+                  <button
+                    onClick={() => { handleLogout(); setOpen(false); }}
                     className="btn btn-ghost w-full justify-start gap-2"
                   >
                     <LogOut className="size-4" />
                     Sair
                   </button>
                 </li>
-              ])
+              ]
             )}
           </ul>
         </div>

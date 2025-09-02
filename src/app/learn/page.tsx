@@ -293,7 +293,7 @@ export default function LearnPage() {
           </p>
         </div>
 
-        <div className="flex justify-center gap-4 mb-10">
+        <div className="flex flex-col sm:flex-row justify-center gap-4 mb-10">
             <button 
                 className={`btn btn-lg ${activeTab === 'tips' ? 'btn-primary' : 'btn-outline btn-primary'}`} 
                 onClick={() => setActiveTab('tips')}>
