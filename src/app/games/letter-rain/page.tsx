@@ -386,7 +386,7 @@ export default function LetterRainPage() {
         cancelAnimationFrame(animationRef.current);
       }
     };
-  }, [gameState, score, lives, combo, multiplier, currentInput, freezeActive, screenFlash, spawnRate, spawnWord, debugMode, baseSpeed]);
+  }, [gameState, score, lives, combo, multiplier, currentInput, freezeActive, screenFlash, spawnRate, spawnWord, debugMode, baseSpeed, matchExact, matchPrefix]);
   
   // Start game
   const startGame = () => {
