@@ -13,8 +13,8 @@ export default async function DashboardPage() {
       <div className="max-w-4xl mx-auto">
         <div className="bg-white rounded-lg shadow-xl p-8">
           <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-gray-800 mb-2">🏆 Dashboard Goldtype</h1>
-            <p className="text-gray-600">Vila Real, Portugal</p>
+            <h1 className="text-3xl font-bold text-gray-800 mb-2">🏆 Dashboard Tecla Certa</h1>
+            <p className="text-gray-600">Goldenergy, Vila Real</p>
           </div>
 
           <div className="bg-gradient-to-r from-yellow-50 to-yellow-100 rounded-lg p-6 mb-8">

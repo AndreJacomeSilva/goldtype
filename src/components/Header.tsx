@@ -101,7 +101,7 @@ export function Header() {
           <div className="flex items-center gap-2">
             <div className="hidden md:flex flex-col items-end">
               <span className="text-sm font-medium">{user.displayName || user.email}</span>
-              <span className="text-xs text-neutral/70">Goldtype</span>
+              <span className="text-xs text-neutral/70">Tecla Certa</span>
             </div>
             <div className="avatar placeholder">
               <div className="bg-primary/10 text-primary w-10 h-10 rounded-full">
@@ -146,7 +146,7 @@ export function Header() {
                     </div>
                     <div className="flex-1 text-left">
                       <div className="text-sm font-medium">{user.displayName || user.email}</div>
-                      <div className="text-xs text-neutral/70">Goldtype</div>
+                      <div className="text-xs text-neutral/70">Tecla Certa</div>
                     </div>
                   </div>
                 </li>,

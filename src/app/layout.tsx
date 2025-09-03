@@ -15,8 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Goldtype - Tecla Certa | A Energia na Ponta dos Teus Dedos",
-  description: "Plataforma de treino de dactilografia para a equipa Goldenergy em Vila Real, Portugal. Transforma cada clique numa vitória!",
+  title: "Tecla Certa | A Energia na Ponta dos Teus Dedos",
+  description: "Plataforma de treino de dactilografia para a equipa Goldenergy. Transforma cada clique numa vitória!",
 };
 
 export default function RootLayout({
