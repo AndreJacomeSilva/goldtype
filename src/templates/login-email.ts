@@ -11,7 +11,7 @@ export function generateLoginEmailHtml({ code, loginUrl, validMinutes }: LoginEm
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Código de Acesso - Goldtype</title>
+    <title>Código de Acesso - Tecla Certa</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -91,13 +91,13 @@ export function generateLoginEmailHtml({ code, loginUrl, validMinutes }: LoginEm
 <body>
     <div class="container">
         <div class="header">
-            <div class="logo">🏆 Goldtype</div>
-            <div class="subtitle">Vila Real, Portugal</div>
+            <div class="logo">🏆 Tecla Certa</div>
+            <div class="subtitle">Goldenergy Vila Real, Portugal</div>
         </div>
         
         <h2>Olá! 👋</h2>
         
-        <p>Recebeste este email porque solicitaste acesso à tua conta Goldtype.</p>
+        <p>Recebeste este email porque solicitaste acesso à tua conta Tecla Certa.</p>
         
         <div class="code-section">
             <p><strong>O teu código de acesso é:</strong></p>
@@ -107,7 +107,7 @@ export function generateLoginEmailHtml({ code, loginUrl, validMinutes }: LoginEm
         
         <p style="text-align: center;">
             <strong>Ou clica no botão abaixo para acesso directo:</strong><br>
-            <a href="${loginUrl}" class="button">🚀 Entrar na Goldtype</a>
+            <a href="${loginUrl}" class="button">🚀 Entrar na Tecla Certa</a>
         </p>
         
         <div class="warning">
@@ -119,8 +119,8 @@ export function generateLoginEmailHtml({ code, loginUrl, validMinutes }: LoginEm
         
         <div class="footer">
             <p>
-                <strong>Goldtype</strong><br>
-                Vila Real, Portugal<br>
+                <strong>Tecla Certa</strong><br>
+                Goldenergy, Vila Real<br>
                 Este é um email automático, por favor não respondas.
             </p>
         </div>
@@ -131,5 +131,5 @@ export function generateLoginEmailHtml({ code, loginUrl, validMinutes }: LoginEm
 }
 
 export function generateLoginEmailSubject(): string {
-  return "🔑 O teu código de acesso à Goldtype";
+  return "🔑 O teu código de acesso à Tecla Certa";
 }

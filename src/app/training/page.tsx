@@ -37,6 +37,9 @@ export default function TrainPage() {
   const [startTimestamp, setStartTimestamp] = useState<number | null>(null);
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
   const [hasEnded, setHasEnded] = useState(false);
+  // Período de graça: permitir mais 10s de escrita após o áudio terminar
+  const [graceActive, setGraceActive] = useState(false);
+  const graceTimeoutRef = useRef<number | null>(null);
   const [frozenWpm, setFrozenWpm] = useState<number | null>(null);
   const [evaluation, setEvaluation] = useState<EvaluationResult | null>(null);
   const score = useMemo(() => {
@@ -136,6 +139,13 @@ export default function TrainPage() {
     setHasEnded(true);
     // Congela WPM final
     setFrozenWpm(stats.wpm);
+    // Ativa período de graça de 10 segundos
+    setGraceActive(true);
+    if (graceTimeoutRef.current) window.clearTimeout(graceTimeoutRef.current);
+    graceTimeoutRef.current = window.setTimeout(() => {
+      setGraceActive(false);
+      graceTimeoutRef.current = null;
+    }, 10000);
   }, [stopTimer, stats.wpm]);
 
   // Speed change
@@ -163,6 +173,7 @@ export default function TrainPage() {
   // Cleanup on unmount
   useEffect(() => () => {
     if (intervalRef.current) window.clearInterval(intervalRef.current);
+  if (graceTimeoutRef.current) window.clearTimeout(graceTimeoutRef.current);
   }, []);
 
   const formatTime = (seconds: number) => {
@@ -257,7 +268,7 @@ export default function TrainPage() {
             className="textarea textarea-bordered w-full h-96 font-mono tracking-wide leading-relaxed"
             placeholder={selectedAudio ? 'Começa a escrever depois de carregar em Reproduzir...' : 'Escolhe primeiro um áudio.'}
             value={typedText}
-            disabled={!isPlaying}
+            disabled={!(isPlaying || graceActive)}
             onChange={e => setTypedText(e.target.value)}
           />
         </div>

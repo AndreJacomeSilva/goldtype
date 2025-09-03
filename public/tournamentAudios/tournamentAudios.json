@@ -16,5 +16,23 @@
     "durationSeconds": 53,
     "transcript": "Esta ativação pode ser feita no Portal do Agente ou na Área de Cliente pelo próprio cliente. No Portal de Agentes, deves selecionar o separador \"Pedidos - Casa Fechada\".\nSão necessárias as leituras atualizadas e devemos informar o cliente que deve desligar o interruptor principal no quadro elétrico e fechar a válvula no contador de gás. Será apenas faturado o valor das taxas e impostos sem consumo.\nNOTA: Informamos o cliente que o sistema de \"casa fechada\" é desativado automaticamente quando existem consumos. Informar o cliente que de futuro pode fazer esta alteração na Área de Cliente.​",
     "language": "pt-PT"
+  },
+  {
+    "id": "Escaloes_gas_natural",
+    "title": "Escalões de Gás Natural",
+    "description": "Explicação sobre os diferentes escalões de consumo de Gás Natural.",
+    "fileUrl": "Escaloes_gas_natural.mp3",
+    "durationSeconds": 89,
+    "transcript": "O escalão de consumo de gás consiste em quatro faixas estabelecidas no mercado livre para consumidores domésticos. Convém mencionar que os consumidores domésticos estão ligados em baixa pressão e possuem consumos anuais iguais ou inferiores a 10.000 m3.\nEscalão 1 – 0 a 220 m3/ano\nEscalão 2 – 221 a 500 m3/ano\nEscalão 3 – 501 a 1.000 m3/ano\nEscalão 4 – 1.001 a 10.000 m3/ano\nO escalão de cada cliente é revisto anualmente pelo ORD.\nNOTA: Quanto maior o escalão de consumo menor o preço do kwh, mas será maior o preço do termo fixo. Quando o consumidor de gás natural consome mais do que 10.000 m3/ano, é considerado um cliente industrial. Neste caso, não há um escalão de consumo de gás, é necessário recorrer a um tarifário personalizado.",
+    "language": "pt-PT"
+  },
+  {
+    "id": "Isencao_de_corte",
+    "title": "Isenção de Corte",
+    "description": "Quando e como deve ser aplicada a isenção de corte",
+    "fileUrl": "Isencao_de_corte.mp3",
+    "durationSeconds": 89,
+    "transcript": "Quando usar a isenção de fatura? \nA isenção de fatura é um procedimento para casos especiais. Só pode ser usada com a autorização do Team Leader . Essa autorização deve ser anotada na folha de registo da chamada.\n\nQuando podemos isentar uma fatura? \nPodemos isentar uma fatura em duas situações:\n1. Quando há uma reclamação sobre uma fatura específica. Por exemplo, se a fatura tem uma leitura errada, precisamos pedir ao ORD para corrigir.\n2. Quando há uma mudança de titularidade. Sempre que fazemos uma AT, devemos isentar a fatura do antigo titular. Isso garante que a energia não seja cortada até a AT estar concluída.\nNota importante sobre a isenção de fatura:\nNão podemos usar a isenção de fatura quando o aviso de corte já passou da data.",
+    "language": "pt-PT"
   }
 ]

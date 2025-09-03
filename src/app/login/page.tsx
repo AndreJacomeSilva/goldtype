@@ -7,6 +7,7 @@ function LoginForm() {
   const [email, setEmail] = useState("");
   const [code, setCode] = useState("");
   const [displayName, setDisplayName] = useState("");
+  const [needsDisplayName, setNeedsDisplayName] = useState(false);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   
@@ -35,6 +36,7 @@ function LoginForm() {
       const data = await res.json();
       
       if (res.ok) {
+        setNeedsDisplayName(!!data.needsDisplayName);
         if (data.throttled) {
           setMessage("Código enviado recentemente. Aguarda um minuto antes de solicitar outro.");
         } else {
@@ -69,16 +71,19 @@ function LoginForm() {
         body: JSON.stringify({ 
           email: normalizedEmail, 
           code: code.trim(), 
-          displayName: displayName.trim() 
+          ...(needsDisplayName && displayName.trim() ? { displayName: displayName.trim() } : {})
         }),
-        headers: { "Content-Type": "application/json" }
+        headers: { "Content-Type": "application/json" },
+        credentials: 'include'
       });
       
       const data = await res.json();
       
       if (res.ok) {
         setMessage("Login realizado com sucesso!");
-        setTimeout(() => router.push("/"), 1000);
+  try { localStorage.setItem('auth:event', `${Date.now()}:login`); } catch {}
+  try { window.dispatchEvent(new Event('auth:changed')); } catch {}
+        setTimeout(() => router.push("/"), 500);
       } else {
         setMessage(data.error || "Código inválido");
       }
@@ -99,13 +104,16 @@ function LoginForm() {
       fetch("/api/auth/verify", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: emailParam, token: tokenParam })
+        body: JSON.stringify({ email: emailParam, token: tokenParam }),
+        credentials: 'include'
       })
         .then(res => res.json())
         .then(data => {
           if (data.ok) {
             setMessage("Login automático realizado com sucesso!");
-            setTimeout(() => router.push("/"), 1000);
+            try { localStorage.setItem('auth:event', `${Date.now()}:login`); } catch {}
+            try { window.dispatchEvent(new Event('auth:changed')); } catch {}
+            setTimeout(() => router.push("/"), 500);
           } else {
             setMessage("Link inválido ou expirado");
             setEmail(emailParam);
@@ -177,19 +185,21 @@ function LoginForm() {
               />
             </div>
             
-            <div>
-              <label htmlFor="displayName" className="block text-sm font-medium text-gray-700 mb-2">
-                Como te chamamos? (opcional)
-              </label>
-              <input
-                id="displayName"
-                placeholder="O teu nome"
-                value={displayName}
-                onChange={(e) => setDisplayName(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
-                disabled={loading}
-              />
-            </div>
+            {needsDisplayName && (
+              <div>
+                <label htmlFor="displayName" className="block text-sm font-medium text-gray-700 mb-2">
+                  Como te chamamos? (opcional)
+                </label>
+                <input
+                  id="displayName"
+                  placeholder="O teu nome"
+                  value={displayName}
+                  onChange={(e) => setDisplayName(e.target.value)}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+                  disabled={loading}
+                />
+              </div>
+            )}
             
             <button
               type="submit"

@@ -18,29 +18,55 @@ export function Header() {
   const primaryNav = [
     { href: "/", label: "Homepage" },
     { href: "/learn", label: "Aprender" },
-    { href: "/training", label: "Treinar" },
     { href: "/games", label: "Jogar" },
+    { href: "/training", label: "Treinar" },
     { href: "/tournament", label: "Competir" },
     { href: "/leaderboard", label: "Vencedores" },
   ];
 
   useEffect(() => {
-    fetch('/api/auth/me')
-      .then(res => res.json())
-      .then(data => {
-        setUser(data.user);
-        setLoading(false);
-      })
-      .catch(() => {
-        setUser(null);
-        setLoading(false);
-      });
+    const load = (attempt = 0) => {
+      fetch('/api/auth/me', { cache: 'no-store', credentials: 'include' })
+        .then(res => res.json())
+        .then(data => {
+          setUser(data.user);
+          setLoading(false);
+          if (!data.user && attempt < 2) {
+            // pequena retry em caso de atraso de escrita de cookie
+            setTimeout(() => load(attempt + 1), 300);
+          }
+        })
+        .catch(() => {
+          setUser(null);
+          setLoading(false);
+        });
+    };
+    load();
+
+    // Ouvir eventos de login/logout noutros separadores para sincronizar estado
+    const handler = (e: StorageEvent) => {
+      if (e.key === 'auth:event') {
+        load();
+      }
+    };
+    const customHandler = () => load();
+    window.addEventListener('auth:changed', customHandler as EventListener);
+    window.addEventListener('storage', handler);
+    // Quando volta a ficar visível, revalidar
+    const visHandler = () => { if (document.visibilityState === 'visible') load(); };
+    document.addEventListener('visibilitychange', visHandler);
+    return () => {
+      window.removeEventListener('storage', handler);
+      window.removeEventListener('auth:changed', customHandler as EventListener);
+      document.removeEventListener('visibilitychange', visHandler);
+    };
   }, []);
 
   const handleLogout = async () => {
     try {
-      await fetch('/api/auth/logout', { method: 'POST' });
+  await fetch('/api/auth/logout', { method: 'POST', credentials: 'include' });
       setUser(null);
+  try { localStorage.setItem('auth:event', `${Date.now()}:logout`); } catch {}
       window.location.href = '/';
     } catch (error) {
       console.error('Error logging out:', error);

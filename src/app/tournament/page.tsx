@@ -38,6 +38,9 @@ export default function TournamentPage() {
   const [startTimestamp, setStartTimestamp] = useState<number | null>(null);
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
   const [hasEnded, setHasEnded] = useState(false);
+  // Período de graça de 10s após terminar o áudio para finalizar texto
+  const [graceActive, setGraceActive] = useState(false);
+  const graceTimeoutRef = useRef<number | null>(null);
   const [frozenWpm, setFrozenWpm] = useState<number | null>(null);
   const [evaluation, setEvaluation] = useState<EvaluationResult | null>(null);
   const [submitting, setSubmitting] = useState(false);
@@ -129,15 +132,22 @@ export default function TournamentPage() {
     setIsPlaying(false);
     setHasEnded(true);
     setFrozenWpm(stats.wpm);
+    setGraceActive(true);
+    if (graceTimeoutRef.current) window.clearTimeout(graceTimeoutRef.current);
+    graceTimeoutRef.current = window.setTimeout(() => {
+      setGraceActive(false);
+      graceTimeoutRef.current = null;
+    }, 10000);
   }, [stats.wpm, stopTimer]);
 
   // Avaliação automática quando termina
   useEffect(() => {
-    if (hasEnded && audio && audio.transcript && frozenWpm !== null && !evaluation) {
+    // Só avaliar quando terminar o período de graça
+    if (hasEnded && !graceActive && audio && audio.transcript && frozenWpm !== null && !evaluation) {
       const result = evaluateTranscription({ reference: audio.transcript, typed: typedText, wpm: frozenWpm });
       setEvaluation(result);
     }
-  }, [hasEnded, audio, frozenWpm, typedText, evaluation]);
+  }, [hasEnded, graceActive, audio, frozenWpm, typedText, evaluation]);
 
   // Submeter automaticamente quando avaliação pronta
   useEffect(() => {
@@ -169,7 +179,10 @@ export default function TournamentPage() {
     })();
   }, [evaluation, audio, submitting, successMsg, alreadyThisWeek]);
 
-  useEffect(() => () => { if (intervalRef.current) window.clearInterval(intervalRef.current); }, []);
+  useEffect(() => () => {
+    if (intervalRef.current) window.clearInterval(intervalRef.current);
+    if (graceTimeoutRef.current) window.clearTimeout(graceTimeoutRef.current);
+  }, []);
 
   const formatTime = (seconds: number) => {
     const m = Math.floor(seconds / 60).toString().padStart(2, '0');
@@ -223,7 +236,7 @@ export default function TournamentPage() {
             className="textarea textarea-bordered w-full h-96 font-mono tracking-wide leading-relaxed"
             placeholder={audio ? (alreadyThisWeek ? 'Já não dá para esta semana.' : 'Carrega em Começar Prova e começa a escrever...') : 'A preparar áudio...'}
             value={typedText}
-            disabled={!isPlaying || alreadyThisWeek}
+            disabled={!(isPlaying || graceActive) || alreadyThisWeek}
             onChange={e => setTypedText(e.target.value)}
           />
         </div>
