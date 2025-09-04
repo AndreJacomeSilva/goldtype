@@ -5,6 +5,7 @@ import { genNumericCode, sha256, genToken } from "@/lib/crypto";
 import { sendMail } from "@/lib/email";
 import { generateLoginEmailHtml, generateLoginEmailSubject } from "@/templates/login-email";
 import { eq, and, gt, desc } from "drizzle-orm";
+import { isAllowedDomain } from "@/lib/auth";
 
 const CODE_TTL_MIN = 10;           // expira em 10 minutos
 const REQUEST_COOLDOWN_SEC = 60;   // 1 pedido por minuto por utilizador
@@ -17,6 +18,10 @@ export async function POST(req: Request) {
     }
 
     const normalizedEmail = email.toLowerCase().trim();
+
+    if (!isAllowedDomain(normalizedEmail)) {
+      return NextResponse.json({ error: "Domínio de email não autorizado" }, { status: 403 });
+    }
 
     // cria ou obtém utilizador
     const [user] = await db

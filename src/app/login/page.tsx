@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { isAllowedDomain, allowedDomains } from "@/lib/auth";
 
 function LoginForm() {
   const [step, setStep] = useState<"email" | "code">("email");
@@ -23,8 +24,8 @@ function LoginForm() {
     e.preventDefault();
     if (!email.trim()) return;
     const normalizedEmail = email.trim().toLowerCase();
-    if (!normalizedEmail.endsWith("@goldenergy.pt")) {
-      setMessage("Se não tens a energia Goldenergy, não podes ter a 'Tecla Certa'! ⚡ Esta aplicação é um segredo de família... 🤫 e é exclusiva para as nossas equipas com email Goldenergy.");
+    if (!isAllowedDomain(normalizedEmail)) {
+      setMessage(`Acesso restrito a emails corporativos aprovados: ${allowedDomains.join(", ")}.`);
       return;
     }
     
@@ -38,11 +39,11 @@ function LoginForm() {
         headers: { "Content-Type": "application/json" }
       });
       
-  const data = await res.json();
+      const data = await res.json();
       
       if (res.ok) {
-  setNeedsDisplayName(!!data.needsDisplayName);
-  setNeedsDepartment(!!data.needsDepartment);
+        setNeedsDisplayName(!!data.needsDisplayName);
+        setNeedsDepartment(!!data.needsDepartment);
         if (data.throttled) {
           setMessage("Código enviado recentemente. Aguarda um minuto antes de solicitar outro.");
         } else {
@@ -63,8 +64,8 @@ function LoginForm() {
     e.preventDefault();
     if (!code.trim()) return;
     const normalizedEmail = email.trim().toLowerCase();
-    if (!normalizedEmail.endsWith("@goldenergy.pt")) {
-      setMessage("Se não tens a energia Goldenergy, não podes ter a 'Tecla Certa'! ⚡ Esta aplicação é um segredo de família... 🤫 e é exclusiva para as nossas equipas com email Goldenergy.");
+    if (!isAllowedDomain(normalizedEmail)) {
+      setMessage(`Acesso restrito a emails corporativos aprovados: ${allowedDomains.join(", ")}.`);
       return;
     }
     
@@ -72,7 +73,7 @@ function LoginForm() {
     setMessage("");
     
     try {
-    const res = await fetch("/api/auth/verify", {
+      const res = await fetch("/api/auth/verify", {
         method: "POST",
         body: JSON.stringify({ 
           email: normalizedEmail, 

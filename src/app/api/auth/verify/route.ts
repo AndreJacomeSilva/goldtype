@@ -4,6 +4,7 @@ import { users, loginCodes } from "@/db/schema";
 import { sha256, genToken } from "@/lib/crypto";
 import { createSession } from "@/lib/session";
 import { eq, and, gt, isNull, desc, sql } from "drizzle-orm";
+import { isAllowedDomain } from "@/lib/auth";
 
 const MAX_ATTEMPTS = 5;
 const SESSION_MAX_AGE = 30 * 24 * 60 * 60; // 30 dias em segundos
@@ -16,6 +17,10 @@ export async function POST(req: Request) {
     }
 
     const normalizedEmail = email.toLowerCase().trim();
+
+    if (!isAllowedDomain(normalizedEmail)) {
+      return NextResponse.json({ error: "Domínio de email não autorizado" }, { status: 403 });
+    }
 
     const user = await db
       .select({ id: users.id, displayName: users.displayName, department: users.department })
