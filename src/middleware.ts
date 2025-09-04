@@ -15,7 +15,10 @@ export function middleware(request: NextRequest) {
   
   // Allow public routes to pass through
   if (isPublicRoute) {
-    return NextResponse.next();
+    const res = NextResponse.next();
+    // Debug header to help verify cookie visibility on public routes too
+    res.headers.set('x-auth-session', request.cookies.get('session') ? 'present' : 'absent');
+    return res;
   }
 
   // For protected routes, check if user has session cookie
@@ -24,15 +27,21 @@ export function middleware(request: NextRequest) {
   if (!sessionCookie) {
     // Redirect to login if no session
     const loginUrl = new URL('/login', request.url);
+    // Preserve where the user was going for better UX and debugging
+    loginUrl.searchParams.set('next', pathname);
     return NextResponse.redirect(loginUrl);
   }
 
-  return NextResponse.next();
+  const res = NextResponse.next();
+  // Lightweight debug header to confirm middleware sees the cookie
+  res.headers.set('x-auth-session', 'present');
+  return res;
 }
 
 export const config = {
   matcher: [
-    '/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)',
+    // Exclude common static assets including json/mp3/wav so training/tournament assets aren't gated by auth
+    '/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest|json|mp3|wav)).*)',
     '/(api|trpc)(.*)'
   ],
 };

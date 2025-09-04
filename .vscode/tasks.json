@@ -6,6 +6,11 @@
 			"type": "shell",
 			"command": "npm run -s build",
 			"args": []
+		},
+		{
+			"label": "Typecheck project",
+			"type": "shell",
+			"command": "npm run -s build"
 		}
 	]
 }
