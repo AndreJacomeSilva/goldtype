@@ -34,5 +34,23 @@
     "durationSeconds": 89,
     "transcript": "Quando usar a isenção de fatura? \nA isenção de fatura é um procedimento para casos especiais. Só pode ser usada com a autorização do Team Leader . Essa autorização deve ser anotada na folha de registo da chamada.\n\nQuando podemos isentar uma fatura? \nPodemos isentar uma fatura em duas situações:\n1. Quando há uma reclamação sobre uma fatura específica. Por exemplo, se a fatura tem uma leitura errada, precisamos pedir ao ORD para corrigir.\n2. Quando há uma mudança de titularidade. Sempre que fazemos uma AT, devemos isentar a fatura do antigo titular. Isso garante que a energia não seja cortada até a AT estar concluída.\nNota importante sobre a isenção de fatura:\nNão podemos usar a isenção de fatura quando o aviso de corte já passou da data.",
     "language": "pt-PT"
+  },
+  {
+    "id": "familia_numerosa",
+    "title": "Familias Numerosas",
+    "description": "Familias Numerosas - Requisitos e documentos necessários",
+    "fileUrl": "familia_numerosa.mp3",
+    "durationSeconds": 108,
+    "transcript": "Requisitos para o apoio a famílias numerosas:\nPara receber este apoio, a sua família deve ter 5 ou mais pessoas. Além disso, a Potência Contratada deve ser igual ou inferior a 6,9kVA. \nSe aceite, o estatuto de família numerosa é atribuído no dia seguinte à apresentação do requerimento e tem validade de 2 anos.\n\nBenefícios do apoio a famílias numerosas:\nSe receber este apoio, o IVA será reduzido para 6% nos primeiros 150kWh de consumo. Normalmente, esta redução só se aplica aos primeiros 100kWh.\n\nDocumentos necessários para o apoio a famílias numerosas:\nDeve encaminhar-nos o formulário de famílias numerosas, preenchido, que pode encontrar em goldenergy.pt/documentos-uteis, juntamente com um dos seguintes documentos: \na declaração de IRS mais recente, o Cartão Municipal de Família Numerosa, a Declaração da Junta de Freguesia que comprove o agregado familiar ou a fatura do fornecimento de água onde consta a atribuição do apoio de Família Numerosa.",
+    "language": "pt-PT"
+  },
+  {
+    "id": "mercado_livre",
+    "title": "Mercado Livre",
+    "description": "Quando e como deve ser aplicada a isenção de corte",
+    "fileUrl": "mercado_livre.mp3",
+    "durationSeconds": 108,
+    "transcript": "Mercado Livre e a concorrência na energia \nO Mercado Livre permite que vários fornecedores de energia concorram entre si. Oferecem preços e serviços variados, seguindo os regulamentos da ERSE.\n\nTarifas Transitórias no Mercado Regulado \nNo Mercado Regulado, existem Tarifas Transitórias aprovadas pela ERSE, revistas todos os anos a 15 de dezembro. Estas tarifas são a soma das tarifas de Acesso às Redes, Energia e Comercialização.\n\nDiferença entre Mercado Livre e Mercado Regulado \nA principal diferença entre os dois mercados é a forma como os preços da energia são definidos. No Mercado Regulado, a ERSE define os preços anualmente. No Mercado Livre, cada fornecedor define os seus preços, seguindo as regras da concorrência e o Regulamento das Relações Comerciais.",
+    "language": "pt-PT"
   }
 ]

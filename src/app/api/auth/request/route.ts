@@ -26,10 +26,11 @@ export async function POST(req: Request) {
         target: users.email,
         set: { email: normalizedEmail }
       })
-      .returning({ id: users.id, displayName: users.displayName });
+  .returning({ id: users.id, displayName: users.displayName, department: users.department });
 
     const userId = user.id;
-    const needsDisplayName = !user.displayName;
+  const needsDisplayName = !user.displayName;
+  const needsDepartment = !user.department;
 
     // evita spam: só permite novo código passado 1 min
     const recent = await db
@@ -45,7 +46,7 @@ export async function POST(req: Request) {
       .limit(1);
 
     if (recent.length > 0) {
-      return NextResponse.json({ ok: true, throttled: true, needsDisplayName });
+  return NextResponse.json({ ok: true, throttled: true, needsDisplayName, needsDepartment });
     }
 
     const code = genNumericCode(6);
@@ -79,7 +80,7 @@ export async function POST(req: Request) {
 
     await sendMail(normalizedEmail, subject, emailHtml);
 
-  return NextResponse.json({ ok: true, needsDisplayName });
+  return NextResponse.json({ ok: true, needsDisplayName, needsDepartment });
   } catch (error) {
     console.error('Error in auth request:', error);
     return NextResponse.json({ error: "Erro interno do servidor" }, { status: 500 });

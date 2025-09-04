@@ -48,6 +48,7 @@ export async function getCurrentUser() {
       id: users.id,
       email: users.email,
       displayName: users.displayName,
+  department: users.department,
     })
     .from(sessions)
     .innerJoin(users, eq(users.id, sessions.userId))

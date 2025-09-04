@@ -8,6 +8,11 @@ function LoginForm() {
   const [code, setCode] = useState("");
   const [displayName, setDisplayName] = useState("");
   const [needsDisplayName, setNeedsDisplayName] = useState(false);
+  const [needsDepartment, setNeedsDepartment] = useState(false);
+  const [department, setDepartment] = useState("Outro");
+  const departments = [
+    "After Sales","Billing","Comercial B2B","Comercial B2C","Continuous Improvement","Controlling, Reporting & Data Analysis","Customer Service","Customer Success","Cut-off & Debt Management","Energy Management","F2F","HR","IT","Legal","Marketing","New Energy","Operations","Partnerships","Retail","Switch","Tax, Accounting & Treasury","Telemarketing","Winback","Outro"
+  ];
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   
@@ -33,10 +38,11 @@ function LoginForm() {
         headers: { "Content-Type": "application/json" }
       });
       
-      const data = await res.json();
+  const data = await res.json();
       
       if (res.ok) {
-        setNeedsDisplayName(!!data.needsDisplayName);
+  setNeedsDisplayName(!!data.needsDisplayName);
+  setNeedsDepartment(!!data.needsDepartment);
         if (data.throttled) {
           setMessage("Código enviado recentemente. Aguarda um minuto antes de solicitar outro.");
         } else {
@@ -66,12 +72,13 @@ function LoginForm() {
     setMessage("");
     
     try {
-      const res = await fetch("/api/auth/verify", {
+    const res = await fetch("/api/auth/verify", {
         method: "POST",
         body: JSON.stringify({ 
           email: normalizedEmail, 
           code: code.trim(), 
-          ...(needsDisplayName && displayName.trim() ? { displayName: displayName.trim() } : {})
+          ...(needsDisplayName && displayName.trim() ? { displayName: displayName.trim() } : {}),
+          ...(needsDepartment && department ? { department } : {}),
         }),
         headers: { "Content-Type": "application/json" },
         credentials: 'include'
@@ -185,20 +192,42 @@ function LoginForm() {
               />
             </div>
             
-            {needsDisplayName && (
-              <div>
-                <label htmlFor="displayName" className="block text-sm font-medium text-gray-700 mb-2">
-                  Como te chamamos? (opcional)
-                </label>
-                <input
-                  id="displayName"
-                  placeholder="O teu nome"
-                  value={displayName}
-                  onChange={(e) => setDisplayName(e.target.value)}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
-                  disabled={loading}
-                />
-              </div>
+            {(needsDisplayName || needsDepartment) && (
+              <>
+                {needsDisplayName && (
+                  <div>
+                    <label htmlFor="displayName" className="block text-sm font-medium text-gray-700 mb-2">
+                      Como te chamamos? (opcional)
+                    </label>
+                    <input
+                      id="displayName"
+                      placeholder="O teu nome"
+                      value={displayName}
+                      onChange={(e) => setDisplayName(e.target.value)}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+                      disabled={loading}
+                    />
+                  </div>
+                )}
+                {needsDepartment && (
+                  <div>
+                    <label htmlFor="department" className="block text-sm font-medium text-gray-700 mb-2">
+                      Departamento (opcional)
+                    </label>
+                    <select
+                      id="department"
+                      value={department}
+                      onChange={(e) => setDepartment(e.target.value)}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+                      disabled={loading}
+                    >
+                      {departments.map((d) => (
+                        <option key={d} value={d}>{d}</option>
+                      ))}
+                    </select>
+                  </div>
+                )}
+              </>
             )}
             
             <button

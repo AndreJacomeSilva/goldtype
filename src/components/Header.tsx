@@ -7,6 +7,7 @@ interface User {
   id: string;
   email: string;
   displayName: string | null;
+  department?: string | null;
 }
 
 export function Header() {
@@ -99,17 +100,19 @@ export function Header() {
           </Link>
         ) : (
           <div className="flex items-center gap-2">
-            <div className="hidden md:flex flex-col items-end">
-              <span className="text-sm font-medium">{user.displayName || user.email}</span>
-              <span className="text-xs text-neutral/70">Tecla Certa</span>
-            </div>
-            <div className="avatar placeholder">
-              <div className="bg-primary/10 text-primary w-10 h-10 rounded-full">
-                <span className="text-sm font-semibold">
-                  {(user.displayName || user.email).charAt(0).toUpperCase()}
-                </span>
+            <Link href="/profile" aria-label="Abrir perfil" className="group flex items-center gap-2">
+              <div className="hidden md:flex flex-col items-end">
+                <span className="text-sm font-medium group-hover:underline">{user.displayName || user.email}</span>
+                <span className="text-xs text-neutral/70">Tecla Certa</span>
               </div>
-            </div>
+              <div className="avatar placeholder">
+                <div className="bg-primary/10 text-primary w-10 h-10 rounded-full flex items-center justify-center">
+                  <span className="text-sm font-semibold">
+                    {(user.displayName || user.email).charAt(0).toUpperCase()}
+                  </span>
+                </div>
+              </div>
+            </Link>
             <button 
               className="btn btn-ghost btn-sm" 
               aria-label="Sair" 
@@ -136,10 +139,10 @@ export function Header() {
             ) : (
               [
                 <li key="user-info" className="mt-4 border-t pt-4">
-                  <div className="flex items-center gap-3 p-2">
+                  <Link href="/profile" onClick={() => setOpen(false)} className="flex items-center gap-3 p-2" aria-label="Abrir perfil">
                     <div className="avatar placeholder">
-                      <div className="bg-primary/10 text-primary w-8 h-8 rounded-full">
-                        <span className="text-xs font-semibold">
+                      <div className="bg-primary/10 text-primary w-8 h-8 rounded-full grid place-items-center">
+                        <span className="text-xs font-semibold leading-none">
                           {(user.displayName || user.email).charAt(0).toUpperCase()}
                         </span>
                       </div>
@@ -148,7 +151,7 @@ export function Header() {
                       <div className="text-sm font-medium">{user.displayName || user.email}</div>
                       <div className="text-xs text-neutral/70">Tecla Certa</div>
                     </div>
-                  </div>
+                  </Link>
                 </li>,
                 <li key="logout">
                   <button

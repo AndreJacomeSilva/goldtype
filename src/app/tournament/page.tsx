@@ -34,6 +34,7 @@ export default function TournamentPage() {
   const [audio, setAudio] = useState<TournamentAudio | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [hasStarted, setHasStarted] = useState(false);
   const [typedText, setTypedText] = useState('');
   const [startTimestamp, setStartTimestamp] = useState<number | null>(null);
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
@@ -109,11 +110,19 @@ export default function TournamentPage() {
     if (intervalRef.current) { window.clearInterval(intervalRef.current); intervalRef.current = null; }
   }, []);
 
-  const handlePlay = useCallback(() => {
+  const handlePlay = useCallback(async () => {
     if (!audio || alreadyThisWeek || !audioRef.current) return;
     setError(null);
     try {
-      audioRef.current.play();
+      // Garantir que o src está definido antes de dar play
+      const el = audioRef.current;
+      const src = `/tournamentAudios/${audio.fileUrl}`;
+      if (el.src !== window.location.origin + src) {
+        el.src = src;
+        el.load();
+      }
+      setHasStarted(true);
+      await el.play();
       setIsPlaying(true);
       const now = Date.now();
       setStartTimestamp(now);
@@ -217,9 +226,11 @@ export default function TournamentPage() {
 
       <div className="card bg-base-200 shadow-md">
         <div className="card-body space-y-4">
-          <h2 className="text-2xl font-semibold">{audio ? audio.title : 'A carregar...'}</h2>
-          <p className="text-sm opacity-80 whitespace-pre-line">{audio?.description}</p>
-          <audio ref={audioRef} src={audio ? `/tournamentAudios/${audio.fileUrl}` : undefined} onEnded={onEnded} preload="metadata" />
+          <h2 className="text-2xl font-semibold">
+            {!audio ? 'A preparar a prova...' : hasStarted ? audio.title : 'Prova pronta — clica em "Começar Prova" para revelar o texto' }
+          </h2>
+          <p className="text-sm opacity-80 whitespace-pre-line">{hasStarted ? audio?.description : ''}</p>
+          <audio ref={audioRef} src={hasStarted && audio ? `/tournamentAudios/${audio.fileUrl}` : undefined} onEnded={onEnded} preload={hasStarted ? 'metadata' : 'none'} />
           <div className="flex flex-wrap gap-3 items-center">
             <button className="btn btn-primary" disabled={!audio || isPlaying || alreadyThisWeek} onClick={handlePlay}>
               <FaPlay className="mr-1" /> Começar Prova

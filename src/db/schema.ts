@@ -6,6 +6,8 @@ export const users = pgTable('users', {
   id: uuid('id').primaryKey().defaultRandom(),
   email: text('email').notNull().unique(),
   displayName: text('display_name'),
+  // Departamento simples como string (não usar enum para permitir expansão futura)
+  department: text('department'),
   createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
 });
 

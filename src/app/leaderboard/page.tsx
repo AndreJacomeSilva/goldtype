@@ -2,6 +2,7 @@ import { db } from '@/db';
 import { competitionResults, users } from '@/db/schema';
 import { desc, eq, gte } from 'drizzle-orm';
 import React from 'react';
+import DepartmentFilter from '@/components/DepartmentFilter';
 
 export const dynamic = 'force-dynamic';
 
@@ -9,6 +10,7 @@ interface AllTimeRow {
   userId: string;
   displayName: string | null;
   email: string;
+  department: string | null;
   bestScore: number;
   bestWpm: number;
   bestPrecision: number;
@@ -19,6 +21,7 @@ interface WeeklyRow {
   userId: string;
   displayName: string | null;
   email: string;
+  department: string | null;
   score: number;
   wpm: number;
   precision: number;
@@ -60,6 +63,7 @@ async function fetchAllTime(): Promise<AllTimeRow[]> {
     createdAt: competitionResults.createdAt,
     email: users.email,
     displayName: users.displayName,
+  department: users.department,
   }).from(competitionResults).innerJoin(users, eq(users.id, competitionResults.userId));
 
   const map = new Map<string, AllTimeRow>();
@@ -70,6 +74,7 @@ async function fetchAllTime(): Promise<AllTimeRow[]> {
         userId: r.userId,
         displayName: r.displayName,
         email: r.email,
+        department: r.department,
         bestScore: r.score,
         bestWpm: r.wpm,
         bestPrecision: r.precision,
@@ -95,6 +100,7 @@ async function fetchWeekly(): Promise<Record<string, WeeklyRow[]>> {
     createdAt: competitionResults.createdAt,
     email: users.email,
     displayName: users.displayName,
+  department: users.department,
   }).from(competitionResults)
     .innerJoin(users, eq(users.id, competitionResults.userId))
     .where(gte(competitionResults.createdAt, earliest))
@@ -109,6 +115,7 @@ async function fetchWeekly(): Promise<Record<string, WeeklyRow[]>> {
       userId: r.userId,
       displayName: r.displayName,
       email: r.email,
+  department: r.department,
       score: r.score,
       wpm: r.wpm,
       precision: r.precision,
@@ -122,13 +129,38 @@ async function fetchWeekly(): Promise<Record<string, WeeklyRow[]>> {
   return buckets;
 }
 
-export default async function LeaderboardPage() {
+export default async function LeaderboardPage({ searchParams }: { searchParams?: Promise<{ dept?: string }> }) {
   const [allTime, weeklyBuckets] = await Promise.all([
     fetchAllTime(),
     fetchWeekly(),
   ]);
 
   const weekKeys = Object.keys(weeklyBuckets).sort((a,b) => new Date(b).getTime() - new Date(a).getTime()).slice(0,6);
+
+  const sp = (await searchParams) ?? {};
+  const selectedDept = (sp.dept ?? 'Todos');
+  const normDept = selectedDept === 'Sem departamento' ? null : (selectedDept === 'Todos' ? undefined : selectedDept);
+  const allDeptsSet = new Set<string>(['Todos', 'Sem departamento']);
+  for (const r of allTime) {
+    allDeptsSet.add(r.department || 'Sem departamento');
+  }
+  const allDepts = Array.from(allDeptsSet);
+
+  const filteredAllTime = typeof normDept === 'undefined'
+    ? allTime
+    : allTime.filter(r => (normDept === null ? !r.department : r.department === normDept));
+
+  // Top 5 departamentos por melhor score all-time (max por departamento)
+  const deptBest: Record<string, number> = {};
+  for (const r of allTime) {
+    const key = r.department || 'Sem departamento';
+    if (deptBest[key] == null || r.bestScore > deptBest[key]) {
+      deptBest[key] = r.bestScore;
+    }
+  }
+  const top5Departments = Object.entries(deptBest)
+    .sort((a,b) => b[1] - a[1])
+    .slice(0,5);
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-10 space-y-10">
@@ -138,7 +170,10 @@ export default async function LeaderboardPage() {
       </header>
 
       <section className="space-y-4">
-        <h2 className="text-2xl font-semibold flex items-center gap-2">Ranking Geral <span className="badge badge-primary">Top {allTime.length}</span></h2>
+        <div className="flex items-center justify-between gap-4 flex-wrap">
+          <h2 className="text-2xl font-semibold flex items-center gap-2">Ranking Geral <span className="badge badge-primary">Top {filteredAllTime.length}</span></h2>
+          <DepartmentFilter selectedDept={selectedDept} allDepts={allDepts} />
+        </div>
         {allTime.length === 0 ? (
           <p className="italic opacity-60">Ainda não há dados. Bora lá inaugurar isto!</p>
         ) : (
@@ -148,6 +183,7 @@ export default async function LeaderboardPage() {
                 <tr>
                   <th>#</th>
                   <th>Colaborador</th>
+                  <th>Departamento</th>
                   <th>Score</th>
                   <th>Precisão %</th>
                   <th>WPM</th>
@@ -155,14 +191,43 @@ export default async function LeaderboardPage() {
                 </tr>
               </thead>
               <tbody>
-                {allTime.map((r, idx) => (
+                {filteredAllTime.map((r, idx) => (
                   <tr key={r.userId} className={idx===0 ? 'bg-primary/20' : idx===1 ? 'bg-primary/10' : idx===2 ? 'bg-primary/5' : ''}>
                     <td>{idx+1}</td>
                     <td>{r.displayName || r.email.split('@')[0]}</td>
+                    <td>{r.department || '—'}</td>
                     <td className="font-semibold">{r.bestScore}</td>
                     <td>{r.bestPrecision}</td>
                     <td>{r.bestWpm}</td>
                     <td>{r.lastDate.toLocaleDateString('pt-PT')}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </section>
+
+      <section className="space-y-4">
+        <h2 className="text-2xl font-semibold">Top 5 Departamentos (melhor score all-time)</h2>
+        {top5Departments.length === 0 ? (
+          <p className="italic opacity-60">Ainda não há dados por departamento.</p>
+        ) : (
+          <div className="overflow-x-auto rounded border border-base-300">
+            <table className="table table-zebra text-sm">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Departamento</th>
+                  <th>Melhor Score</th>
+                </tr>
+              </thead>
+              <tbody>
+                {top5Departments.map(([dept, score], idx) => (
+                  <tr key={dept}>
+                    <td>{idx+1}</td>
+                    <td>{dept}</td>
+                    <td className="font-semibold">{score}</td>
                   </tr>
                 ))}
               </tbody>
@@ -193,16 +258,20 @@ export default async function LeaderboardPage() {
                           <th>Score</th>
                           <th>%</th>
                           <th>WPM</th>
+                          <th>Dept</th>
                         </tr>
                       </thead>
                       <tbody>
-                        {rows.map((r, idx) => (
+                        {rows
+                          .filter(r => typeof normDept === 'undefined' ? true : (normDept === null ? !r.department : r.department === normDept))
+                          .map((r, idx) => (
                           <tr key={r.userId} className={idx===0 ? 'text-primary font-semibold' : ''}>
                             <td>{idx+1}</td>
                             <td>{r.displayName || r.email.split('@')[0]}</td>
                             <td>{r.score}</td>
                             <td>{r.precision}</td>
                             <td>{r.wpm}</td>
+                            <td>{r.department || '—'}</td>
                           </tr>
                         ))}
                       </tbody>

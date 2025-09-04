@@ -10,7 +10,7 @@ const SESSION_MAX_AGE = 30 * 24 * 60 * 60; // 30 dias em segundos
 
 export async function POST(req: Request) {
   try {
-    const { email, code, token, displayName } = await req.json().catch(() => ({}));
+  const { email, code, token, displayName, department } = await req.json().catch(() => ({}));
     if (!email || (typeof code !== "string" && typeof token !== "string")) {
       return NextResponse.json({ error: "Pedido inválido" }, { status: 400 });
     }
@@ -18,7 +18,7 @@ export async function POST(req: Request) {
     const normalizedEmail = email.toLowerCase().trim();
 
     const user = await db
-      .select({ id: users.id, displayName: users.displayName })
+      .select({ id: users.id, displayName: users.displayName, department: users.department })
       .from(users)
       .where(eq(users.email, normalizedEmail))
       .limit(1);
@@ -74,18 +74,22 @@ export async function POST(req: Request) {
       .where(eq(loginCodes.id, lc.id));
 
     // prime login: guarda display_name se fornecido e ainda vazio
+    const updates: Record<string, string> = {};
     if (!userData.displayName && displayName && typeof displayName === "string" && displayName.trim().length) {
-      await db
-        .update(users)
-        .set({ displayName: displayName.trim() })
-        .where(eq(users.id, userData.id));
+      updates.displayName = displayName.trim();
+    }
+    if (!userData.department && typeof department === "string" && department.trim().length) {
+      updates.department = department.trim();
+    }
+    if (Object.keys(updates).length > 0) {
+      await db.update(users).set(updates).where(eq(users.id, userData.id));
     }
 
     // cria sessão de 30 dias
     const rawSession = genToken(32);
     await createSession(userData.id, rawSession, SESSION_MAX_AGE);
 
-    return NextResponse.json({ ok: true });
+  return NextResponse.json({ ok: true });
   } catch (error) {
     console.error('Error in auth verify:', error);
     return NextResponse.json({ error: "Erro interno do servidor" }, { status: 500 });
