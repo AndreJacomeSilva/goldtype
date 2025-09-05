@@ -78,7 +78,7 @@ export default function TournamentPage() {
     let cancelled = false;
     (async () => {
       try {
-        const res = await fetch('/api/tournament/status', { cache: 'no-store' });
+  const res = await fetch('/api/tournament/status', { cache: 'no-store', credentials: 'include' });
         if (res.ok) {
           const json = await res.json();
             if (!cancelled) {
@@ -88,6 +88,8 @@ export default function TournamentPage() {
                 if (new Date(json.last.createdAt) >= sow) setAlreadyThisWeek(true);
               }
             }
+        } else if (res.status === 401) {
+          if (!cancelled) setError('É preciso iniciar sessão para participar no torneio.');
         }
       } catch {}
     })();
@@ -167,6 +169,7 @@ export default function TournamentPage() {
         const res = await fetch('/api/tournament/submit', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
           body: JSON.stringify({
             audioId: audio.id,
             wpm: evaluation.wpm,

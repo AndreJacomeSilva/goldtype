@@ -17,12 +17,12 @@ function startOfWeek(d: Date): Date {
 export async function POST(req: NextRequest) {
   try {
     const user = await getCurrentUser();
-    if (!user) return NextResponse.json({ error: 'Não autenticado' }, { status: 401 });
+  if (!user) return NextResponse.json({ error: 'Não autenticado' }, { status: 401, headers: { 'Cache-Control': 'no-store, no-cache, must-revalidate, private' } });
 
     const body = await req.json();
     const { audioId, wpm, precisionPercent } = body as { audioId?: string; wpm?: number; precisionPercent?: number; };
     if (!audioId || typeof wpm !== 'number' || typeof precisionPercent !== 'number') {
-      return NextResponse.json({ error: 'Parâmetros inválidos' }, { status: 400 });
+  return NextResponse.json({ error: 'Parâmetros inválidos' }, { status: 400, headers: { 'Cache-Control': 'no-store, no-cache, must-revalidate, private' } });
     }
 
     // Calcula score
@@ -38,7 +38,7 @@ export async function POST(req: NextRequest) {
       .limit(1);
 
     if (existing.length > 0) {
-      return NextResponse.json({ error: 'Já fizeste a prova desta semana. Aguenta aí até para a próxima.' }, { status: 403 });
+  return NextResponse.json({ error: 'Já fizeste a prova desta semana. Aguenta aí até para a próxima.' }, { status: 403, headers: { 'Cache-Control': 'no-store, no-cache, must-revalidate, private' } });
     }
 
     const inserted = await db.insert(competitionResults).values({
@@ -49,9 +49,9 @@ export async function POST(req: NextRequest) {
       score,
     }).returning({ id: competitionResults.id, createdAt: competitionResults.createdAt, score: competitionResults.score });
 
-    return NextResponse.json({ ok: true, result: inserted[0] });
+  return NextResponse.json({ ok: true, result: inserted[0] }, { headers: { 'Cache-Control': 'no-store, no-cache, must-revalidate, private' } });
   } catch (e) {
     console.error(e instanceof Error ? e.message : e);
-    return NextResponse.json({ error: 'Erro interno' }, { status: 500 });
+  return NextResponse.json({ error: 'Erro interno' }, { status: 500, headers: { 'Cache-Control': 'no-store, no-cache, must-revalidate, private' } });
   }
 }

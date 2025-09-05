@@ -94,7 +94,8 @@ export async function POST(req: Request) {
     const rawSession = genToken(32);
     await createSession(userData.id, rawSession, SESSION_MAX_AGE);
 
-  return NextResponse.json({ ok: true });
+  const res = NextResponse.json({ ok: true }, { headers: { 'Cache-Control': 'no-store, no-cache, must-revalidate, private' } });
+  return res;
   } catch (error) {
     console.error('Error in auth verify:', error);
     return NextResponse.json({ error: "Erro interno do servidor" }, { status: 500 });

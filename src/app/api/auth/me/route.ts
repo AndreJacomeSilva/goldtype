@@ -9,7 +9,7 @@ export async function GET() {
   try {
     const user = await getCurrentUser();
     return NextResponse.json(
-  { user: user ?? null },
+      { user: user ?? null },
       { headers: { 'Cache-Control': 'no-store, no-cache, must-revalidate, private' } }
     );
   } catch (error) {
